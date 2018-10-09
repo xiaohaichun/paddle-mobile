@@ -28,7 +28,7 @@ protocol OpParam {
   
   associatedtype ParamPrecisionType: PrecisionType
   init(opDesc: OpDesc, inScope: Scope) throws
-  static func getFirstTensor<VarType: Variant>(key: String, map: [String : [String]], from: Scope) throws -> VarType
+//  static func getFirstTensor<VarType: Variant>(key: String, map: [String : [String]], from: Scope) throws -> VarType
   static func inputX<VarType: Variant>(inputs: [String : [String]], from: Scope) throws -> VarType
   static func inputBiase<VarType: Variant>(inputs: [String : [String]], from: Scope) throws -> VarType
   static func inputMean<VarType: Variant>(inputs: [String : [String]], from: Scope) throws -> VarType
@@ -54,29 +54,32 @@ protocol OpParam {
   
 }
 
+
+func getFirstTensor<VarType: Variant>(key: String, map: [String : [String]], from: Scope) throws -> VarType {
+    guard let mapKeys = map[key], mapKeys.count > 0 else {
+        throw PaddleMobileError.paramError(message: key + " not found in \(map) or maped values is empty")
+    }
+    guard let variant = from[mapKeys[0]] else {
+        throw PaddleMobileError.paramError(message: mapKeys[0] + " not found in scope")
+    }
+    
+    guard let v = variant as? VarType else {
+        throw PaddleMobileError.paramError(message: " type error")
+        
+    }
+    return v
+}
+
 extension OpParam {
   func outputDesc() -> String {
     return output.debugDescription
   }
-  
-  static func getFirstTensor<VarType: Variant>(key: String, map: [String : [String]], from: Scope) throws -> VarType {
-    guard let mapKeys = map[key], mapKeys.count > 0 else {
-      throw PaddleMobileError.paramError(message: key + " not found in \(map) or maped values is empty")
-    }
-    guard let variant = from[mapKeys[0]] else {
-      throw PaddleMobileError.paramError(message: mapKeys[0] + " not found in scope")
-    }
-    
-    guard let v = variant as? VarType else {
-      throw PaddleMobileError.paramError(message: " type error")
 
-    }
-    return v
-  }
   
   static func outputVariances<VarType: Variant>(outputs: [String : [String]], from: Scope) throws -> VarType {
     do {
-      let tensorVariances: VarType = try getFirstTensor(key: "Variances", map: outputs, from: from)
+        
+        let tensorVariances: VarType = try getFirstTensor(key: "Variances", map: outputs, from: from)
       return tensorVariances
     } catch let error {
       throw error

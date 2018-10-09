@@ -18,8 +18,8 @@ class MulticlassNMSParam<P: PrecisionType>: OpParam {
   typealias ParamPrecisionType = P
   required init(opDesc: OpDesc, inScope: Scope) throws {
     do {
-      scores = try MulticlassNMSParam.getFirstTensor(key: "Scores", map: opDesc.inputs, from: inScope)
-      bboxes = try MulticlassNMSParam.getFirstTensor(key: "BBoxes", map: opDesc.inputs, from: inScope)
+      scores = try getFirstTensor(key: "Scores", map: opDesc.inputs, from: inScope)
+      bboxes = try getFirstTensor(key: "BBoxes", map: opDesc.inputs, from: inScope)
       output = try MulticlassNMSParam.outputOut(outputs: opDesc.outputs, from: inScope)
       
       middleOutput = FetchHolder.init(inCapacity: scores.tensorDim.numel(), inDim: scores.tensorDim.dims)

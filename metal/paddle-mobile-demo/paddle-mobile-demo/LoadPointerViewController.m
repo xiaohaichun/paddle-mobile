@@ -78,6 +78,9 @@
 - (IBAction)predictButtonPressed:(id)sender {
   [self predict];
 }
+- (IBAction)clearButtonPressed:(id)sender {
+  [_runner clear];
+}
 
 - (id<MTLTexture>) createTextureFromImage:(UIImage*) image device:(id<MTLDevice>) device
 {
@@ -135,7 +138,7 @@
 - (void)predict {
   _texture = [self createTextureFromImage:[UIImage imageNamed:@"hand.jpg"] device:self.device];
   NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-  NSInteger max = 428;
+  NSInteger max = 50;
   for (int i = 0;i < max; i ++) {
     [_runner predict:_texture withCompletion:^(BOOL success , NSArray<NSNumber *> *result) {
       if (success) {

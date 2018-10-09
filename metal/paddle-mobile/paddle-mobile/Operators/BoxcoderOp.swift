@@ -18,10 +18,10 @@ class BoxcoderParam<P: PrecisionType>: OpParam {
   typealias ParamPrecisionType = P
   required init(opDesc: OpDesc, inScope: Scope) throws {
     do {
-      priorBox = try BoxcoderParam.getFirstTensor(key: "PriorBox", map: opDesc.inputs, from: inScope)
-      priorBoxVar = try BoxcoderParam.getFirstTensor(key: "PriorBoxVar", map: opDesc.inputs, from: inScope)
-      targetBox = try BoxcoderParam.getFirstTensor(key: "TargetBox", map: opDesc.inputs, from: inScope)
-      output = try BoxcoderParam.getFirstTensor(key: "OutputBox", map: opDesc.outputs, from: inScope)
+      priorBox = try getFirstTensor(key: "PriorBox", map: opDesc.inputs, from: inScope)
+      priorBoxVar = try getFirstTensor(key: "PriorBoxVar", map: opDesc.inputs, from: inScope)
+      targetBox = try getFirstTensor(key: "TargetBox", map: opDesc.inputs, from: inScope)
+      output = try getFirstTensor(key: "OutputBox", map: opDesc.outputs, from: inScope)
       codeType = try BoxcoderParam.getAttr(key: "code_type", attrs: opDesc.attrs)
       boxNormalized = try BoxcoderParam.getAttr(key: "box_normalized", attrs: opDesc.attrs)
     } catch let error {

@@ -23,10 +23,10 @@ class BatchNormParam<P: PrecisionType>: OpParam {
         fatalError("batch norm only accepts NHWC")
       }
       output = try BatchNormParam.outputY(outputs: opDesc.outputs, from: inScope)
-      bias = try BatchNormParam.getFirstTensor(key: "Bias", map: opDesc.paraInputs, from: inScope)
-      mean = try BatchNormParam.getFirstTensor(key: "Mean", map: opDesc.paraInputs, from: inScope)
-      scale = try BatchNormParam.getFirstTensor(key: "Scale", map: opDesc.paraInputs, from: inScope)
-      variance = try BatchNormParam.getFirstTensor(key: "Variance", map: opDesc.paraInputs, from: inScope)
+      bias = try getFirstTensor(key: "Bias", map: opDesc.paraInputs, from: inScope)
+      mean = try getFirstTensor(key: "Mean", map: opDesc.paraInputs, from: inScope)
+      scale = try getFirstTensor(key: "Scale", map: opDesc.paraInputs, from: inScope)
+      variance = try getFirstTensor(key: "Variance", map: opDesc.paraInputs, from: inScope)
       epsilon = try BatchNormParam.getAttr(key: "epsilon", attrs: opDesc.attrs)
       momentum = try BatchNormParam.getAttr(key: "momentum", attrs: opDesc.attrs)
     } catch let error {
